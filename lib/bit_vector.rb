@@ -2,19 +2,20 @@ require "bit_vector/version"
 
 module BitVector
   class BitVector
-    VECTOR_LAST_INDEX = 31
+    SIZE = 32
 
     # Returns new bit vector initialized to optional number.
     def initialize(number = 0)
       @array = []
-      VECTOR_LAST_INDEX.downto(0) do |i|
-        @array << number[i]
+
+      SIZE.times do |index|
+        array[index] = number[index]
       end
     end
 
     # Returns a string representation.
     def to_s
-      @array.join('')
+      array.join.reverse
     end
 
     # Returns an integer representation.
@@ -24,12 +25,12 @@ module BitVector
 
     # Sets the element at index.
     def []=(index, value)
-      array[VECTOR_LAST_INDEX - index] = value
+      array[index] = value
     end
 
     # Returns the element at index.
     def [](index)
-      array[VECTOR_LAST_INDEX - index]
+      array[index]
     end
 
     # Loads vector from value.
