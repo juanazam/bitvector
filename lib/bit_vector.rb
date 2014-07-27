@@ -6,36 +6,33 @@ module BitVector
 
     # Returns new bit vector initialized to optional number.
     def initialize(number = 0)
-      @array = []
-
-      SIZE.times do |index|
-        array[index] = number[index]
-      end
+      @number = number
     end
 
     # Returns a string representation.
     def to_s
-      array.join.reverse
+      "%0#{SIZE}b" % number
     end
 
     # Returns an integer representation.
     def to_i
-      to_s.to_i(2)
+      number
     end
 
     # Sets the element at index.
     def []=(index, value)
-      array[index] = value
+      mask = 1 << index
+      @number = value == 0 ? number & mask : number | mask
     end
 
     # Returns the element at index.
     def [](index)
-      array[index]
+      number[index]
     end
 
     # Loads vector from value.
     def self.load(value)
-      new(value.to_i)
+      new value.to_i
     end
 
     # Dumps vector to value.
@@ -44,13 +41,13 @@ module BitVector
     end
 
     # Returns true if equal to other vector. Two vectors are considered equal if
-    # their arrays are equal.
+    # their numbers are equal.
     def ==(other)
-      array == other.array
+      number == other.number
     end
 
     protected
 
-    attr_reader :array
+    attr_reader :number
   end
 end
