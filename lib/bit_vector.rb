@@ -2,18 +2,19 @@ require "bit_vector/version"
 
 module BitVector
   class BitVector
-    SIZE = 32
+    DEFAULT_SIZE = 32
 
-    attr_reader :number
+    attr_reader :number, :size
 
     # Returns new bit vector initialized to optional number.
-    def initialize(number = 0)
-      @number = number
+    def initialize(number = 0, size = DEFAULT_SIZE)
+      @number, @size = number, size
+      raise ArgumentError, "number must be =< #{max_number}" if number > max_number
     end
 
     # Returns a string representation.
     def to_s
-      "%0#{SIZE}b" % number
+      "%0#{size}b" % number
     end
 
     # Returns an integer representation.
@@ -21,12 +22,14 @@ module BitVector
 
     # Sets the element at index.
     def []=(index, value)
+      raise ArgumentError, "index must be < #{size}" if index >= size
       mask = 1 << index
       @number = value == 0 ? number & mask : number | mask
     end
 
     # Returns the element at index.
     def [](index)
+      raise ArgumentError, "index must be < #{size}" if index >= size
       number[index]
     end
 
@@ -41,9 +44,15 @@ module BitVector
     end
 
     # Returns true if equal to other vector. Two vectors are considered equal if
-    # their numbers are equal.
+    # their numbers and sizes are equal.
     def ==(other)
-      number == other.number
+      number == other.number && size == other.size
+    end
+
+    private
+
+    def max_number
+      2 ** size - 1
     end
   end
 end

@@ -33,8 +33,16 @@ module BitVector
           bit_vector[2] = 1
         end
 
-        it 'stores value in given position' do
-          bit_vector.must_equal(BitVector.new(4))
+        it "sets value at given position" do
+          bit_vector.must_equal BitVector.new(4)
+        end
+      end
+
+      describe "with a too large index" do
+        let(:index) { bit_vector.size + 1 }
+
+        it "raises" do
+          lambda { bit_vector[index] = 1 }.must_raise(ArgumentError)
         end
       end
     end
@@ -42,10 +50,18 @@ module BitVector
     describe '[]' do
       let(:number) { 3 }
 
-      it 'gets value from given position' do
-        bit_vector[0].must_equal(1)
-        bit_vector[1].must_equal(1)
-        bit_vector[2].must_equal(0)
+      it "returns values at given positions" do
+        bit_vector[0].must_equal 1
+        bit_vector[1].must_equal 1
+        bit_vector[2].must_equal 0
+      end
+
+      describe "with a too large index" do
+        let(:index) { bit_vector.size + 1 }
+
+        it "raises" do
+          lambda { bit_vector[index] }.must_raise(ArgumentError)
+        end
       end
     end
 
@@ -58,6 +74,84 @@ module BitVector
 
       it 'returns integer representation of vector' do
         subject.must_equal(4)
+      end
+    end
+
+    describe "#size" do
+      subject { bit_vector.size }
+
+      it "returns the default size" do
+        subject.must_equal 32
+      end
+    end
+
+    describe "#==" do
+      let(:other_number) { bit_vector.number }
+      let(:other_size) { bit_vector.size }
+      let(:other) { BitVector.new other_number, other_size }
+
+      subject { bit_vector == other }
+
+      describe "with same number and size" do
+        it "returns true" do
+          assert subject
+        end
+      end
+
+      describe "with different number and same size" do
+        let(:other_number) { bit_vector.number + 1 }
+
+        it "returns false" do
+          refute subject
+        end
+      end
+
+      describe "with same number and different size" do
+        let(:other_size) { bit_vector.size + 1 }
+
+        it "returns false" do
+          refute subject
+        end
+      end
+
+      describe "with different number and different size" do
+        let(:other_number) { bit_vector.number + 1 }
+        let(:other_size) { bit_vector.size + 1 }
+
+        it "returns false" do
+          refute subject
+        end
+      end
+    end
+
+    describe "with a size argument" do
+      let(:size) { 48 }
+      let(:bit_vector) { BitVector.new(number, size) }
+
+      describe "#initialize" do
+        describe "with a too large number" do
+          let(:number) { 2 ** size }
+
+          it "raises" do
+            lambda { bit_vector }.must_raise(ArgumentError)
+          end
+        end
+      end
+
+      describe "#size" do
+        subject { bit_vector.size }
+
+        it "return the size" do
+          subject.must_equal size
+        end
+      end
+
+      describe "#to_s" do
+        subject { bit_vector.to_s }
+
+        it "returns a formatted string" do
+          subject.must_equal "000000000000000000000000000000000000000000000000"
+        end
       end
     end
 
