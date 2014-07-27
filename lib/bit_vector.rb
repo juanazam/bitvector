@@ -25,7 +25,7 @@ module BitVector
     def []=(index, value)
       raise ArgumentError, "index must be < #{size}" if index >= size
       mask = 1 << index
-      @number = value == 0 ? number & mask : number | mask
+      @number = value == 0 ? number & ~mask : number | mask
     end
 
     # Returns the bit at index.

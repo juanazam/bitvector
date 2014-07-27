@@ -45,6 +45,20 @@ module BitVector
           lambda { bit_vector[index] = 1 }.must_raise(ArgumentError)
         end
       end
+
+      describe "with a bit set" do
+        let(:number) { 0b100 }
+
+        subject { bit_vector[2] }
+
+        before do
+          bit_vector[2] = 0
+        end
+
+        it "clears bit" do
+          subject.must_equal 0
+        end
+      end
     end
 
     describe '[]' do
