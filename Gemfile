@@ -1,4 +1,4 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in bit_vector.gemspec
+# Specify your gem's dependencies in bitvector.gemspec
 gemspec
