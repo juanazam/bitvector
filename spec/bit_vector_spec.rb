@@ -5,24 +5,24 @@ require 'bitvector'
 module BitVector
   describe BitVector do
     let(:number) { 0 }
-    let(:bit_vector) { BitVector.new(number) }
+    let(:bit_vector) { BitVector.new number }
 
     describe "#to_s" do
       subject { bit_vector.to_s }
 
-      describe 'with empty vector' do
+      describe "for an empty vector" do
         let(:bit_vector) { BitVector.new }
 
-        it 'returns all zeros vector' do
-          subject.must_equal('00000000000000000000000000000000')
+        it "returns all zeros" do
+          subject.must_equal("00000000000000000000000000000000")
         end
       end
 
-      describe 'with value 5' do
-        let(:number) { 5 }
+      describe "with a known number" do
+        let(:number) { 0b101 }
 
-        it 'returns 5 in binary form' do
-          subject.must_equal('00000000000000000000000000000101')
+        it "returns a formatted string" do
+          subject.must_equal("00000000000000000000000000000101")
         end
       end
     end
@@ -62,7 +62,7 @@ module BitVector
     end
 
     describe '[]' do
-      let(:number) { 3 }
+      let(:number) { 0b011 }
 
       it "returns values at given positions" do
         bit_vector[0].must_equal 1
