@@ -28,16 +28,6 @@ module BitVector
     end
 
     describe '#[]=' do
-      describe 'when index is between boundaries' do
-        before do
-          bit_vector[2] = 1
-        end
-
-        it "sets value at given position" do
-          bit_vector.must_equal BitVector.new(4)
-        end
-      end
-
       describe "with a too large index" do
         let(:index) { bit_vector.size + 1 }
 
@@ -51,12 +41,50 @@ module BitVector
 
         subject { bit_vector[2] }
 
-        before do
-          bit_vector[2] = 0
+        describe "when set to 0" do
+          before do
+            bit_vector[2] = 0
+          end
+
+          it "clears bit" do
+            subject.must_equal 0
+          end
         end
 
-        it "clears bit" do
-          subject.must_equal 0
+        describe "when set to false" do
+          before do
+            bit_vector[2] = false
+          end
+
+          it "clears bit" do
+            subject.must_equal 0
+          end
+        end
+      end
+
+      describe "with no bits set" do
+        let(:number) { 0b0 }
+
+        subject { bit_vector[0] }
+
+        describe "when set to 1" do
+          before do
+            bit_vector[0] = 1
+          end
+
+          it "sets bit" do
+            subject.must_equal 1
+          end
+        end
+
+        describe "when set to true" do
+          before do
+            bit_vector[0] = true
+          end
+
+          it "sets bit" do
+            subject.must_equal 1
+          end
         end
       end
     end

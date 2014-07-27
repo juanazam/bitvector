@@ -33,6 +33,12 @@ Benchmark.bmbm do |x|
     end
   end
 
+  x.report "Clear at index" do
+    N.times do
+      sample[16] = 0
+    end
+  end
+
   x.report "Get at index" do
     N.times do
       sample[16]
