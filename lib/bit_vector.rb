@@ -28,7 +28,7 @@ module BitVector
     end
 
     def self.load(val)
-      new(val || 0)
+      new(val.to_i)
     end
 
     def self.dump(bit_vector)

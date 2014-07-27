@@ -69,6 +69,14 @@ module BitVector
         end
       end
 
+      describe "when value is blank" do
+        let(:val) { "" }
+
+        it "initializes vector to 0" do
+          subject.must_equal(BitVector.new(0))
+        end
+      end
+
       describe 'when value is int (4)' do
         let(:val) { 4 }
 
