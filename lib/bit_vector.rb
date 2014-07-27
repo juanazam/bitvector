@@ -2,45 +2,57 @@ require "bit_vector/version"
 
 module BitVector
   class BitVector
-    VECTOR_LAST_INDEX = 31
+    DEFAULT_SIZE = 32
 
-    def initialize(num = 0)
-      @array = []
-      VECTOR_LAST_INDEX.downto(0) do |i|
-        @array << num[i]
-      end
+    attr_reader :number, :size
+
+    # Returns new bit vector initialized to optional number.
+    def initialize(number = 0, size = DEFAULT_SIZE)
+      @number, @size = number, size
+      raise ArgumentError, "number must be =< #{max_number}" if number > max_number
     end
 
+    # Returns a string representation.
     def to_s
-      @array.join('')
+      "%0#{size}b" % number
     end
 
-    def to_i
-      to_s.to_i(2)
-    end
+    # Returns an integer representation.
+    alias_method :to_i, :number
 
+    # Sets the element at index.
     def []=(index, value)
-      array[VECTOR_LAST_INDEX - index] = value
+      raise ArgumentError, "index must be < #{size}" if index >= size
+      mask = 1 << index
+      @number = value == 0 ? number & mask : number | mask
     end
 
+    # Returns the element at index.
     def [](index)
-      array[VECTOR_LAST_INDEX - index]
+      raise ArgumentError, "index must be < #{size}" if index >= size
+      number[index]
     end
 
-    def self.load(val)
-      new(val || 0)
+    # Loads vector from value.
+    def self.load(value)
+      new value.to_i
     end
 
-    def self.dump(bit_vector)
-      bit_vector.to_i
+    # Dumps vector to value.
+    def self.dump(vector)
+      vector.to_i
     end
 
-    def ==(other_vector)
-      array == other_vector.array
+    # Returns true if equal to other vector. Two vectors are considered equal if
+    # their numbers and sizes are equal.
+    def ==(other)
+      number == other.number && size == other.size
     end
 
-    protected
+    private
 
-    attr_reader :array
+    def max_number
+      2 ** size - 1
+    end
   end
 end
