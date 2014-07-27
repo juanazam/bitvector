@@ -6,7 +6,7 @@ Small gem to manage integer fields as bit vectors of size 32.
 
 Add this line to your application's Gemfile:
 
-    gem 'bit_vector'
+    gem 'bitvector'
 
 And then execute:
 
@@ -14,7 +14,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install bit_vector
+    $ gem install bitvector
 
 ## Usage
 

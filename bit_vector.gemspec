@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'bit_vector/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "bit_vector"
+  spec.name          = "bitvector"
   spec.version       = BitVector::VERSION
   spec.authors       = ["Juan Azambuja"]
   spec.email         = ["juan@wyeworks.com"]
