@@ -1,6 +1,6 @@
 require 'minitest/autorun'
 require 'minitest/spec'
-require 'bit_vector'
+require 'bitvector'
 
 module BitVector
   describe BitVector do
