@@ -1,12 +1,13 @@
 require "bit_vector/version"
 
 module BitVector
+  # Provides a class to represent a bit vector using a number and size.
   class BitVector
     DEFAULT_SIZE = 32
 
     attr_reader :number, :size
 
-    # Returns new bit vector initialized to optional number.
+    # Returns new bit vector initialized to optional number and size.
     def initialize(number = 0, size = DEFAULT_SIZE)
       @number, @size = number, size
       raise ArgumentError, "number must be =< #{max_number}" if number > max_number
@@ -20,14 +21,14 @@ module BitVector
     # Returns an integer representation.
     alias_method :to_i, :number
 
-    # Sets the element at index.
+    # Sets or clears the bit at index.
     def []=(index, value)
       raise ArgumentError, "index must be < #{size}" if index >= size
       mask = 1 << index
       @number = value == 0 ? number & mask : number | mask
     end
 
-    # Returns the element at index.
+    # Returns the bit at index.
     def [](index)
       raise ArgumentError, "index must be < #{size}" if index >= size
       number[index]
