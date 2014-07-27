@@ -4,19 +4,22 @@ require 'bitvector'
 
 module BitVector
   describe BitVector do
-    let(:bit_vector) { BitVector.new }
+    let(:number) { 0 }
+    let(:bit_vector) { BitVector.new(number) }
 
-    describe '#to_string' do
+    describe "#to_s" do
       subject { bit_vector.to_s }
 
       describe 'with empty vector' do
+        let(:bit_vector) { BitVector.new }
+
         it 'returns all zeros vector' do
           subject.must_equal('00000000000000000000000000000000')
         end
       end
 
       describe 'with value 5' do
-        let(:bit_vector) { BitVector.new(5) }
+        let(:number) { 5 }
 
         it 'returns 5 in binary form' do
           subject.must_equal('00000000000000000000000000000101')
@@ -37,7 +40,7 @@ module BitVector
     end
 
     describe '[]' do
-      let(:bit_vector) { BitVector.new(3) }
+      let(:number) { 3 }
 
       it 'gets value from given position' do
         bit_vector[0].must_equal(1)
@@ -59,10 +62,10 @@ module BitVector
     end
 
     describe '.load' do
-      subject { BitVector.load(val) }
+      subject { BitVector.load(value) }
 
       describe 'when value is nil' do
-        let(:val) { nil }
+        let(:value) { nil }
 
         it 'initializes array with all elements as FALSE' do
           subject.must_equal(BitVector.new(0))
@@ -70,7 +73,7 @@ module BitVector
       end
 
       describe "when value is blank" do
-        let(:val) { "" }
+        let(:value) { "" }
 
         it "initializes vector to 0" do
           subject.must_equal(BitVector.new(0))
@@ -78,7 +81,7 @@ module BitVector
       end
 
       describe 'when value is int (4)' do
-        let(:val) { 4 }
+        let(:value) { 4 }
 
         it 'initializes array representing 4 in binary' do
           subject.must_equal(BitVector.new(4))
@@ -87,7 +90,8 @@ module BitVector
     end
 
     describe '.dump' do
-      let(:bit_vector) { BitVector.new(5) }
+      let(:number) { 5 }
+
       subject { BitVector.dump(bit_vector) }
 
       it 'dumps de parameter bit vector in its integer form' do
