@@ -4,6 +4,8 @@ module BitVector
   class BitVector
     SIZE = 32
 
+    attr_reader :number
+
     # Returns new bit vector initialized to optional number.
     def initialize(number = 0)
       @number = number
@@ -15,9 +17,7 @@ module BitVector
     end
 
     # Returns an integer representation.
-    def to_i
-      number
-    end
+    alias_method :to_i, :number
 
     # Sets the element at index.
     def []=(index, value)
@@ -45,9 +45,5 @@ module BitVector
     def ==(other)
       number == other.number
     end
-
-    protected
-
-    attr_reader :number
   end
 end
