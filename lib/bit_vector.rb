@@ -34,6 +34,44 @@ module BitVector
       number[index]
     end
 
+    # Returns true if equal to other vector. Two vectors are considered equal if
+    # their numbers and sizes are equal.
+    def ==(other)
+      number == other.number && size == other.size
+    end
+
+    # Returns true if equal to other vector and of the same class.
+    def eql?(other)
+      other.is_a?(self.class) && self == other
+    end
+
+    # Returns a new vector containing the combined bits of both vectors.
+    def |(other)
+      raise ArgumentError, "size mismatch" unless other.size == size
+      self.class.new number | other.number, size
+    end
+    alias_method :+, :|
+
+    # Returns a new vector containing the common bits with other vector.
+    def &(other)
+      raise ArgumentError, "size mismatch" unless other.size == size
+      self.class.new number & other.number, size
+    end
+    alias_method :-, :&
+
+    # Returns true if all the bits at indexes are set, false otherwise.
+    def include?(indexes)
+      indexes.all? { |index| self[index] == 1 }
+    end
+
+    # Returns true if all the bits at indexes are unset, false otherwise.
+    def exclude?(indexes)
+      indexes.all? { |index| self[index] == 0 }
+    end
+
+    # This should be good for now.
+    alias_method :hash, :number
+
     # Loads vector from value.
     def self.load(value)
       new value.to_i
@@ -44,10 +82,9 @@ module BitVector
       vector.to_i
     end
 
-    # Returns true if equal to other vector. Two vectors are considered equal if
-    # their numbers and sizes are equal.
-    def ==(other)
-      number == other.number && size == other.size
+    # Creates a new vector with bits at indexes set.
+    def self.from_indexes(indexes, size = DEFAULT_SIZE)
+      new indexes.inject(0) { |number, index| number |= 1 << index; number }, size
     end
 
     private

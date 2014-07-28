@@ -197,6 +197,186 @@ module BitVector
       end
     end
 
+    describe "#+" do
+      let(:other_size) { bit_vector.size }
+      let(:other) { BitVector.new other_number, other_size }
+
+      subject { bit_vector + other }
+
+      describe "with known numbers" do
+        let(:number) { 0b101 }
+        let(:other_number) { 0b110 }
+
+        it "returns the or'ed number" do
+          subject.number.must_equal 0b111
+        end
+      end
+    end
+
+    describe "#-" do
+      let(:other_size) { bit_vector.size }
+      let(:other) { BitVector.new other_number, other_size }
+
+      subject { bit_vector - other }
+
+      describe "with known numbers" do
+        let(:number) { 0b101 }
+        let(:other_number) { 0b110 }
+
+        it "returns the and'ed number" do
+          subject.number.must_equal 0b100
+        end
+      end
+    end
+
+    describe "#include?" do
+      let(:number) { 0b111 }
+
+      subject { bit_vector.include? indexes }
+
+      describe "with included indexes" do
+        let(:indexes) { [0, 1] }
+
+        it "returns true" do
+          assert subject
+        end
+      end
+
+      describe "with partially included indexes" do
+        let(:indexes) { [0, 1, 3] }
+
+        it "returns false" do
+          refute subject
+        end
+      end
+
+      describe "with excluded indexes" do
+        let(:indexes) { [3, 4] }
+
+        it "returns false" do
+          refute subject
+        end
+      end
+
+      describe "with no indexes" do
+        let(:indexes) { [] }
+
+        it "returns true" do
+          assert subject
+        end
+      end
+    end
+
+    describe "#exclude?" do
+      let(:number) { 0b111 }
+
+      subject { bit_vector.exclude? indexes }
+
+      describe "with excluded indexes" do
+        let(:indexes) { [3, 4] }
+
+        it "returns true" do
+          assert subject
+        end
+      end
+
+      describe "with partially excluded indexes" do
+        let(:indexes) { [3, 4, 0] }
+
+        it "returns false" do
+          refute subject
+        end
+      end
+
+      describe "with included indexes" do
+        let(:indexes) { [0, 1] }
+
+        it "returns false" do
+          refute subject
+        end
+      end
+
+      describe "with no indexes" do
+        let(:indexes) { [] }
+
+        it "returns true" do
+          assert subject
+        end
+      end
+    end
+
+    describe "#hash" do
+      let(:other) { BitVector.new other_number }
+
+      subject { bit_vector.hash }
+
+      describe "with the same number" do
+        let(:other_number) { number }
+
+        it "is equal" do
+          subject.must_equal other.hash
+        end
+      end
+
+      describe "with a different number" do
+        let(:other_number) { number + 1 }
+
+        it "is not equal" do
+          subject.wont_equal other.hash
+        end
+      end
+
+      describe "when used with a hash and known values" do
+        let(:hash) do
+          {
+            BitVector.new(0b100) => 1,
+            BitVector.new(0b100) => 2,
+            BitVector.new(0b101) => 3
+          }
+        end
+
+        it "has the right size" do
+          hash.size.must_equal 2
+        end
+      end
+    end
+
+    describe ".from_indexes" do
+      subject { BitVector.from_indexes indexes }
+
+      describe "with no indexes" do
+        let(:indexes) { [] }
+
+        it "returns the zero vector" do
+          subject.must_equal BitVector.new(0)
+        end
+      end
+
+      describe "with known indexes" do
+        let(:indexes) { [1, 2] }
+
+        it "returns the expected vector" do
+          subject.must_equal BitVector.new(0b110)
+        end
+      end
+
+      describe "with known, sparse and repeted indexes" do
+        let(:indexes) { [0, 2, 4, 4] }
+
+        it "returns the expected vector" do
+          subject.must_equal BitVector.new(0b10101)
+        end
+      end
+
+      describe "with a too large index" do
+        let(:indexes) { [1, 2, 48] }
+
+        it "raises" do
+          lambda { subject }.must_raise(ArgumentError)
+        end
+      end
+    end
+
     describe '.load' do
       subject { BitVector.load(value) }
 
