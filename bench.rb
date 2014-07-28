@@ -15,9 +15,15 @@ Benchmark.bmbm do |x|
     end
   end
 
-  x.report "Load vector" do
+  x.report "Load from number" do
     N.times do
-      BitVector::BitVector.load "00000000000000000000000000000000"
+      BitVector::BitVector.load 123
+    end
+  end
+
+  x.report "Load from string" do
+    N.times do
+      BitVector::BitVector.load "123"
     end
   end
 
