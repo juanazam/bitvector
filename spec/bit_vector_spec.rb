@@ -5,39 +5,29 @@ require 'bitvector'
 module BitVector
   describe BitVector do
     let(:number) { 0 }
-    let(:bit_vector) { BitVector.new(number) }
+    let(:bit_vector) { BitVector.new number }
 
     describe "#to_s" do
       subject { bit_vector.to_s }
 
-      describe 'with empty vector' do
+      describe "for an empty vector" do
         let(:bit_vector) { BitVector.new }
 
-        it 'returns all zeros vector' do
-          subject.must_equal('00000000000000000000000000000000')
+        it "returns all zeros" do
+          subject.must_equal("00000000000000000000000000000000")
         end
       end
 
-      describe 'with value 5' do
-        let(:number) { 5 }
+      describe "with a known number" do
+        let(:number) { 0b101 }
 
-        it 'returns 5 in binary form' do
-          subject.must_equal('00000000000000000000000000000101')
+        it "returns a formatted string" do
+          subject.must_equal("00000000000000000000000000000101")
         end
       end
     end
 
     describe '#[]=' do
-      describe 'when index is between boundaries' do
-        before do
-          bit_vector[2] = 1
-        end
-
-        it "sets value at given position" do
-          bit_vector.must_equal BitVector.new(4)
-        end
-      end
-
       describe "with a too large index" do
         let(:index) { bit_vector.size + 1 }
 
@@ -45,10 +35,62 @@ module BitVector
           lambda { bit_vector[index] = 1 }.must_raise(ArgumentError)
         end
       end
+
+      describe "with a bit set" do
+        let(:number) { 0b100 }
+
+        subject { bit_vector[2] }
+
+        describe "when set to 0" do
+          before do
+            bit_vector[2] = 0
+          end
+
+          it "clears bit" do
+            subject.must_equal 0
+          end
+        end
+
+        describe "when set to false" do
+          before do
+            bit_vector[2] = false
+          end
+
+          it "clears bit" do
+            subject.must_equal 0
+          end
+        end
+      end
+
+      describe "with no bits set" do
+        let(:number) { 0b0 }
+
+        subject { bit_vector[0] }
+
+        describe "when set to 1" do
+          before do
+            bit_vector[0] = 1
+          end
+
+          it "sets bit" do
+            subject.must_equal 1
+          end
+        end
+
+        describe "when set to true" do
+          before do
+            bit_vector[0] = true
+          end
+
+          it "sets bit" do
+            subject.must_equal 1
+          end
+        end
+      end
     end
 
     describe '[]' do
-      let(:number) { 3 }
+      let(:number) { 0b011 }
 
       it "returns values at given positions" do
         bit_vector[0].must_equal 1

@@ -15,9 +15,15 @@ Benchmark.bmbm do |x|
     end
   end
 
-  x.report "Load vector" do
+  x.report "Load from number" do
     N.times do
-      BitVector::BitVector.load "00000000000000000000000000000000"
+      BitVector::BitVector.load 123
+    end
+  end
+
+  x.report "Load from string" do
+    N.times do
+      BitVector::BitVector.load "123"
     end
   end
 
@@ -30,6 +36,12 @@ Benchmark.bmbm do |x|
   x.report "Set at index" do
     N.times do
       sample[16] = 1
+    end
+  end
+
+  x.report "Clear at index" do
+    N.times do
+      sample[16] = 0
     end
   end
 
