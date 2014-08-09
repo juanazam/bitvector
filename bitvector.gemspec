@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Juan Azambuja"]
   spec.email         = ["juan@wyeworks.com"]
   spec.summary       = %q{Bit Vector representation and managing of integer fields.}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/juanazam/bitvector"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
