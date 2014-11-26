@@ -29,7 +29,7 @@ module BitVector
 
     describe '#[]=' do
       describe "with a too large index" do
-        let(:index) { bit_vector.size + 1 }
+        let(:index) { bit_vector.size }
 
         it "raises" do
           lambda { bit_vector[index] = 1 }.must_raise(ArgumentError)
@@ -99,7 +99,7 @@ module BitVector
       end
 
       describe "with a too large index" do
-        let(:index) { bit_vector.size + 1 }
+        let(:index) { bit_vector.size }
 
         it "raises" do
           lambda { bit_vector[index] }.must_raise(ArgumentError)
